@@ -6,7 +6,7 @@ const cheerio = require("cheerio");
 
 app.use(express.static("public"));
 
-app.get("/getdate", async (req, res) => {
+app.get("/month", async (req, res) => {
   let pusher = [];
   let qoute = {};
   let events = [];
@@ -59,6 +59,57 @@ app.get("/getdate", async (req, res) => {
   });
 });
 // --------------------
+// || ========================================== ||
+
+app.get("/year", async (req, res) => {
+  let events = {};
+
+  await request(
+    "https://www.time.ir/fa/eventyear-%D8%AA%D9%82%D9%88%DB%8C%D9%85-%D8%B3%D8%A7%D9%84%DB%8C%D8%A7%D9%86%D9%87",
+    async (error, response, html) => {
+      if (!error && response.statusCode == 200) {
+        const $ = cheerio.load(html);
+
+        $(".eventsCurrentMonthWrapper").each((i, data) => {
+          let month_name = $(data).find("span").first().text().trim();
+          let month_events = [];
+
+          $(data)
+            .find("> ul")
+            .find("li")
+            .each((i, data) => {
+              let isHoliday = $(data).hasClass("eventHoliday");
+              let date = $(data).find("> span").first().text();
+              let event = $(data)
+                .clone()
+                .children()
+                .remove()
+                .end()
+                .text()
+                .trim();
+
+              month_events.push({
+                date,
+                event,
+                isHoliday,
+              });
+            });
+
+          events.push({
+            month_name,
+            events: month_events,
+          });
+        });
+      }
+    }
+  );
+
+  res.send({
+    year_events: events,
+  });
+});
+// --------------------
+// || ========================================== ||
 
 app.get("/", (req, res) => {
   res.send("server is running");
