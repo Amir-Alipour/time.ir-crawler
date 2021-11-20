@@ -6,6 +6,7 @@ const cheerio = require("cheerio");
 
 app.use(express.static("public"));
 
+// GET TODAY AND CURRENT MONTH DETAILS AND RANDOM QOUTE
 app.get("/date", async (req, res) => {
   let pusher = [];
   let qoute = {};
@@ -61,6 +62,7 @@ app.get("/date", async (req, res) => {
 // --------------------
 // || ========================================== ||
 
+// GET CURRENT YEAR EVENTS
 app.get("/year", async (req, res) => {
   let events = [];
 
@@ -106,6 +108,46 @@ app.get("/year", async (req, res) => {
 
   res.send({
     year_events: events,
+  });
+});
+// --------------------
+// || ========================================== ||
+
+// GET LIST OF BOOKS AND RANDOM QOUTE
+app.get("/book", async (req, res) => {
+  let books = [];
+  let qoute = {};
+
+  await request(`http://localhost:${port}/date`, (err, response) => {
+    qoute = JSON.parse(response.body).qoute;
+  });
+
+  await request(
+    "https://www.time.ir/fa/booklist-%d9%81%d9%87%d8%b1%d8%b3%d8%aa-%da%a9%d8%aa%d8%a7%d8%a8%d9%87%d8%a7%db%8c-%d9%85%d8%b9%d8%b1%d9%81%db%8c-%d8%b4%d8%af%d9%87-%d8%af%d8%b1-%d8%aa%d8%a7%db%8c%d9%85",
+    async (error, response, html) => {
+      if (!error && response.statusCode == 200) {
+        const $ = cheerio.load(html);
+
+        $(".panel").each((i, data) => {
+          if (i !== 0) {
+            let title = $(data).find(".box-title").text();
+            let thumnail = $(data).find(".content img").attr("src");
+            let description = $(data).find(".content").text();
+
+            books.push({
+              title,
+              thumnail,
+              description,
+            });
+          }
+        });
+      }
+    }
+  );
+
+  res.send({
+    qoute,
+    books,
   });
 });
 // --------------------
