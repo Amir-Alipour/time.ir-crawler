@@ -22,10 +22,5 @@
                 }
             ]
         }
-    ],
-    "functions": {
-        "/index.js": {
-            "maxDuration": 900
-        }
-    }
+    ]
 }
