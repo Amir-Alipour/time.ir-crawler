@@ -24,6 +24,8 @@
         }
     ],
     "functions": {
-        "duration": 10000000
-      }
+        "index.js": {
+            "maxDuration": 10000000
+        }
+    }
 }
