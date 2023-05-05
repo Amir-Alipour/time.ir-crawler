@@ -22,5 +22,9 @@
                 }
             ]
         }
-    ]
+    ],
+    "functions": {
+        "prewarm": true,
+        "duration": 10000000
+      }
 }
