@@ -18,7 +18,7 @@ module.exports = function (html) {
 
             books.push({
                 title,
-                have_thumnail: thumnail ? true : false,
+                has_thumnail: thumnail ? true : false,
                 thumnail,
                 description,
             });
