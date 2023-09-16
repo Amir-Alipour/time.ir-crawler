@@ -24,6 +24,7 @@ app.get("/", (req, res) => {
 
     res.send({
         message: "server is running",
+        github: "https://github.com/Amir-Alipour/time.ir-crawler",
         routes: [
             {
                 route: "/",
