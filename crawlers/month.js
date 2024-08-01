@@ -1,7 +1,7 @@
 const cheerio = require("cheerio");
 
 module.exports = function (html) {
-    let current = [];
+    let current = {};
     let events = [];
 
     const $ = cheerio.load(html);
@@ -9,11 +9,11 @@ module.exports = function (html) {
     let jalaliMotnh = $(".dates").find(".jalali.selectMonth").text();
     let jalaliYear = $(".dates").find(".jalali.selectYear").text();
 
-    current.push({
+    current = {
         title: "jalali",
         month: jalaliMotnh,
         year: jalaliYear,
-    });
+    };
 
     $(".eventsCurrentMonthWrapper")
         .find("> ul")
