@@ -21,7 +21,7 @@ for (let index = 0; index < ROUTES.length; index++) {
 // --------------- --------------- ------------------
 
 app.post("/diff", async (req, res) => {
-    if(!req.query.year || !req.query.month || !req.query.day){
+    if(!req.query.year && !req.query.month && !req.query.day){
         res.sendStatus(400)
     } else {
         const result = await crawler(`/?convertyear=${req.query.year}&convertmonth=${req.query.month}&convertday=${req.query.day}`, diff)
