@@ -20,7 +20,7 @@ for (let index = 0; index < ROUTES.length; index++) {
 }
 // --------------- --------------- ------------------
 
-app.post("/diff", async (req, res) => {
+app.get("/diff", async (req, res) => {
     if(!req.query.year || !req.query.month || !req.query.day){
         res.sendStatus(400)
     } else {
