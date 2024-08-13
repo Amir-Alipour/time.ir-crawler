@@ -4,6 +4,7 @@ const port = 3001;
 
 const crawler = require("./crawlers/crawler");
 const { ROUTES } = require("./ROUTES");
+const diff = require("./crawlers/diff");
 
 app.use(express.static("public"));
 
@@ -18,6 +19,15 @@ for (let index = 0; index < ROUTES.length; index++) {
     });
 }
 // --------------- --------------- ------------------
+
+app.post("/diff", async (req, res) => {
+    if(!req.query.year || !req.query.month || !req.query.day){
+        res.sendStatus(400)
+    } else {
+        const result = await crawler(`/?convertyear=${req.query.year}&convertmonth=${req.query.month}&convertday=${req.query.day}`, diff)
+        res.send(result)
+    }
+})
 
 app.get("/", (req, res) => {
     const baseURL = req.get("host");
@@ -34,6 +44,11 @@ app.get("/", (req, res) => {
                 route: "/date",
                 description: "the current date",
                 url: `https://${baseURL}/date`,
+            },
+            {
+                route: "/diff?year={}&month={}&day={}",
+                description: "get difference of the date from now",
+                url: `https://${baseURL}/diff`,
             },
             {
                 route: "/month",
