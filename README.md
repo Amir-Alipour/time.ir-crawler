@@ -3,6 +3,7 @@
 ## crawling data from time.ir (https://time-ir.vercel.app)
 
 - date (shamsi - gregorian - hijri) (https://time-ir.vercel.app/date)
+- diff (date diff) (https://time-ir.vercel.app/diff?year={}&month={}&day={})
 - month (iranian events) (https://time-ir.vercel.app/month)
 - year (iranian events) (https://time-ir.vercel.app/year)
 - qoute (random persian qoute from random book) (https://time-ir.vercel.app/qoute)
