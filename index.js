@@ -61,9 +61,9 @@ app.get("/", (req, res) => {
                 url: `https://${baseURL}/year`,
             },
             {
-                route: "/qoute",
-                description: "rondom qoute (persian)",
-                url: `https://${baseURL}/qoute`,
+                route: "/quote",
+                description: "rondom quote (persian)",
+                url: `https://${baseURL}/quote`,
             },
             {
                 route: "/books",

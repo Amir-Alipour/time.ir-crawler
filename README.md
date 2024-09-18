@@ -6,7 +6,7 @@
 - diff (date diff) (https://time-ir.vercel.app/diff?year={}&month={}&day={})
 - month (iranian events) (https://time-ir.vercel.app/month)
 - year (iranian events) (https://time-ir.vercel.app/year)
-- qoute (random persian qoute from random book) (https://time-ir.vercel.app/qoute)
+- quote (random persian quote from random book) (https://time-ir.vercel.app/quote)
 - books (time.ir book suggestion) (https://time-ir.vercel.app/books)
 
 ## Api Table
@@ -18,5 +18,5 @@
 | /diff |     the difference of the date from now   | diff |
 | /month |  the current month and it events   | current_month <br/> current_month_iranian_events |
 | /year |  the current year and it months with events  | month_name <br/> year_name <br/> month_title <br/> events |
-| /qoute |  rondom qoute (persian)   | text <br/> auth <br/> auth_link |
+| /quote |  rondom quote (persian)   | text <br/> auth <br/> auth_link |
 | /books |  time.ir book suggestion   | title <br/> thumnail <br/> description |
