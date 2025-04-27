@@ -79,7 +79,7 @@ app.get("/", (req, res) => {
             },
             {
                 route: "/quote",
-                description: "rondom quote (persian)",
+                description: "random quote (persian)",
                 url: `https://${baseURL}/quote`,
             },
             {
