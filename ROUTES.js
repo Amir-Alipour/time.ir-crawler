@@ -40,9 +40,21 @@ exports.ROUTES = [
         route: "/year",
         crawler: getYear,
         crawler_url: URLs.year,
-        response: (data) => {
+        useFormData: true,
+        getFormData: (req) => {
+            const year = req.query.for || '';
             return {
-                current_year_iranian_events: data,
+                Year: year
+            };
+        },
+        customCrawlerCall: (crawler, html, req) => {
+            return crawler(html, req.query.for);
+        },
+        response: (data, req) => {
+            const requestedYear = req.query.for;
+            return {
+                requested_year: requestedYear,
+                selected_year_iranian_events: data,
             };
         },
     },
