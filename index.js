@@ -12,10 +12,27 @@ app.use(express.static("public"));
 for (let index = 0; index < ROUTES.length; index++) {
     const route = ROUTES[index];
 
-    app.get(route.route, async (_, res) => {
-        crawler(route.crawler_url, route.crawler).then((data) => {
-            res.send(route.response(data));
-        });
+    app.get(route.route, async (req, res) => {
+        let url = route.crawler_url;
+        let formData = null;
+        
+        if (route.useFormData) {
+            formData = route.getFormData(req);
+        }
+        
+        try {
+            let data;
+            if (route.customCrawlerCall) {
+                const html = await crawler(url, null, formData, true);
+                data = route.customCrawlerCall(route.crawler, html, req);
+            } else {
+                data = await crawler(url, route.crawler, formData);
+            }
+            res.send(route.response(data, req));
+        } catch (error) {
+            console.error("Error in route handler:", error);
+            res.status(500).send({ error: 'Failed to fetch data' });
+        }
     });
 }
 // --------------- --------------- ------------------
@@ -62,7 +79,7 @@ app.get("/", (req, res) => {
             },
             {
                 route: "/quote",
-                description: "rondom quote (persian)",
+                description: "random quote (persian)",
                 url: `https://${baseURL}/quote`,
             },
             {

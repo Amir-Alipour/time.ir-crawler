@@ -1,13 +1,22 @@
 const request = require("request-promise");
 
-module.exports = async function (url, crawler) {
+module.exports = async function (url, crawler, formData = null, returnRawHtml = false) {
     try {
         let data;
-        await request(`https://www.time.ir${url}`, async (error, response, html) => {
-            if (!error && response.statusCode == 200) {
-                data = crawler(html)
-            }
-        });
+        
+        let options = {
+            uri: `https://www.time.ir${url}`,
+            method: formData ? 'POST' : 'GET',
+            form: formData
+        };
+        
+        const html = await request(options);
+        
+        if (returnRawHtml) {
+            return html;
+        }
+        
+        data = crawler(html);
         return data;
     } catch (error) {
         return error;
