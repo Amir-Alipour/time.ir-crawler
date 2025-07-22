@@ -6,22 +6,21 @@ module.exports = function (html) {
 
     const $ = cheerio.load(html);
 
-    let jalaliMotnh = $(".dates").find(".jalali.selectMonth").text();
-    let jalaliYear = $(".dates").find(".jalali.selectYear").text();
+    let jalaliMonth = $('div[class*="CalendarDetailItem_root__jalali"]').find('> p:nth-child(1)').text();
+    let jalaliYear = $('div[class*="CalendarDetailItem_root__jalali"]').find('> p:nth-child(2)').text();
 
     current = {
         title: "jalali",
-        month: jalaliMotnh,
+        month: jalaliMonth,
         year: jalaliYear,
     };
 
-    $(".eventsCurrentMonthWrapper")
-        .find("> ul")
-        .find("li")
-        .each((i, data) => {
-            let isHoliday = $(data).hasClass("eventHoliday");
-            let date = $(data).find("> span").first().text();
-            let event = $(data).clone().children().remove().end().text().trim();
+    $('div[class*="EventList_root__events__container"]')
+        .find('div[class*="EventListItem"]')
+        .each((_, data) => {
+            let isHoliday = $(data).find('span[class*="holiday"]').length > 0;
+            let date = $(data).find('span[class*="date"]').text()
+            let event = $(data).find('span[class*="event"]').text()
 
             events.push({
                 date,

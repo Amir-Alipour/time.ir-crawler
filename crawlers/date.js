@@ -5,18 +5,26 @@ module.exports = function (html) {
 
     const $ = cheerio.load(html);
 
-    let names = ["shamsi", "gregorian", "hijri"];
+    let names = ["خورشیدی", "میلادی", "قمری"];
 
     names.map((name) => {
-        let title = $(`.today-${name}`).first().find(".title").text();
-        let title_date = $(`.today-${name}`).first().find(".numeral").text();
-        let title_date_text = $(`.today-${name}`).first().find(".date").text();
+        const selector = `div:contains("تاریخ ${name}")`
+
+        let title = $(selector)
+            .find("> p:nth-child(1)")
+            .text();
+        let title_date = $(selector)
+            .find("> p:nth-child(2)")
+            .text();
+        let title_date_text = $(selector)
+            .find("> p:nth-child(3)")
+            .text();
         // ------------------------
 
         dates.push({
-            title: title,
-            date: title_date,
-            date_text: title_date_text,
+            title: title.trim(),
+            date: title_date.trim(),
+            date_text: title_date_text.trim(),
         });
     });
     // -----------

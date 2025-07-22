@@ -12,39 +12,26 @@ app.use(express.static("public"));
 for (let index = 0; index < ROUTES.length; index++) {
     const route = ROUTES[index];
 
-    app.get(route.route, async (req, res) => {
-        let url = route.crawler_url;
-        let formData = null;
-        
-        if (route.useFormData) {
-            formData = route.getFormData(req);
-        }
-        
-        try {
-            let data;
-            if (route.customCrawlerCall) {
-                const html = await crawler(url, null, formData, true);
-                data = route.customCrawlerCall(route.crawler, html, req);
-            } else {
-                data = await crawler(url, route.crawler, formData);
-            }
-            res.send(route.response(data, req));
-        } catch (error) {
-            console.error("Error in route handler:", error);
-            res.status(500).send({ error: 'Failed to fetch data' });
-        }
+    app.get(route.route, async (_, res) => {
+        crawler(route.crawler_url, route.crawler).then((data) => {
+            res.send(route.response(data));
+        });
     });
 }
 // --------------- --------------- ------------------
 
 app.get("/diff", async (req, res) => {
-    if(!req.query.year || !req.query.month || !req.query.day){
-        res.sendStatus(400)
+    if (!req.query.year || !req.query.month || !req.query.day) {
+        res.sendStatus(400);
     } else {
-        const result = await crawler(`/?convertyear=${req.query.year}&convertmonth=${req.query.month}&convertday=${req.query.day}`, diff)
-        res.send(result)
+        const result = await diff(
+            req.query.year,
+            req.query.month,
+            req.query.day
+        );
+        res.send({ text: result });
     }
-})
+});
 
 app.get("/", (req, res) => {
     const baseURL = req.get("host");
@@ -81,11 +68,6 @@ app.get("/", (req, res) => {
                 route: "/quote",
                 description: "random quote (persian)",
                 url: `https://${baseURL}/quote`,
-            },
-            {
-                route: "/books",
-                description: "time.ir book suggestion",
-                url: `https://${baseURL}/books`,
             },
         ],
     });

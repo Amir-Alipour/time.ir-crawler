@@ -5,9 +5,14 @@ module.exports = function (html) {
 
     const $ = cheerio.load(html);
 
-    quote.text = $(".randomQuote").find(".quoteText").text();
-    quote.auth = $(".randomQuote").find(".quoteAuthor").text();
-    quote.auth_link = $(".randomQuote").find(".quoteAuthor").attr("href");
+    const parent = $('div[class*="BrainyQuoteContext"]');
+
+    quote.text = parent.find('> div[class*="textContainer"]').text();
+    quote.auth = parent.find('div[class*="BrainyQuoteAuthor"]').text();
+    quote.auth_link = parent
+        .find('div[class*="BrainyQuoteAuthor"]')
+        .find("> a")
+        .attr("href");
     // -----------
 
     return quote;

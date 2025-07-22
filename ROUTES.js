@@ -3,15 +3,13 @@ const getDate = require("./crawlers/date");
 const getMonth = require("./crawlers/month");
 const getYear = require("./crawlers/year");
 const getQuote = require("./crawlers/quote");
-const getBooks = require("./crawlers/books");
 // =========================================
 
 const URLs = {
-    date: "/",
+    date: "/today",
     month: "/",
-    year: "/fa/eventyear-%D8%AA%D9%82%D9%88%DB%8C%D9%85-%D8%B3%D8%A7%D9%84%DB%8C%D8%A7%D9%86%D9%87",
+    year: "/event-year",
     quote: "/",
-    books: "/fa/booklist-%d9%81%d9%87%d8%b1%d8%b3%d8%aa-%da%a9%d8%aa%d8%a7%d8%a8%d9%87%d8%a7%db%8c-%d9%85%d8%b9%d8%b1%d9%81%db%8c-%d8%b4%d8%af%d9%87-%d8%af%d8%b1-%d8%aa%d8%a7%db%8c%d9%85",
 };
 
 exports.ROUTES = [
@@ -40,21 +38,9 @@ exports.ROUTES = [
         route: "/year",
         crawler: getYear,
         crawler_url: URLs.year,
-        useFormData: true,
-        getFormData: (req) => {
-            const year = req.query.for || '';
+        response: (data) => {
             return {
-                Year: year
-            };
-        },
-        customCrawlerCall: (crawler, html, req) => {
-            return crawler(html, req.query.for);
-        },
-        response: (data, req) => {
-            const requestedYear = req.query.for;
-            return {
-                requested_year: requestedYear,
-                selected_year_iranian_events: data,
+                current_year_iranian_events: data,
             };
         },
     },
@@ -65,16 +51,6 @@ exports.ROUTES = [
         response: (data) => {
             return {
                 quote: data,
-            };
-        },
-    },
-    {
-        route: "/books",
-        crawler: getBooks,
-        crawler_url: URLs.books,
-        response: (data) => {
-            return {
-                books: data,
             };
         },
     },
