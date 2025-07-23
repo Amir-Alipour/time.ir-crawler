@@ -1,0 +1,8 @@
+{
+  "app": "time-ir",
+  "port": 3000,
+  "build": {
+    "location": "iran"
+  },
+  "disks": []
+}
